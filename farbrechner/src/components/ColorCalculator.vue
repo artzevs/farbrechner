@@ -1,16 +1,35 @@
 <template>
   <div class="color-calculator-container">
     <div class="canvas-container">
-      <canvas id="shade-picker" :width="shadePicker.width" :height="shadePicker.height" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove"></canvas>
-      <canvas id="color-picker" :width="colorPicker.width" :height="colorPicker.height" @click="click"></canvas>
+      <canvas
+        id="shade-picker"
+        :width="shadePicker.width"
+        :height="shadePicker.height"
+        @mousedown="mousedown"
+        @mouseup="mouseup"
+        @mousemove="mousemove"
+      ></canvas>
+      <canvas 
+        id="color-picker" 
+        :width="colorPicker.width" 
+        :height="colorPicker.height" 
+        @click="click"
+      ></canvas>
     </div>
     <div class="color-blocks-container">
       <div class="color-block">
-        <div :style="{ backgroundColor: firstPickedColor }" @click="getActiveBlock(1)"></div>
+        <div 
+          :style="{ backgroundColor: firstPickedColor }"
+          :class="chooseColor === 1 && 'border'"
+          @click="getActiveBlock(1)"
+          ></div>
         <span> {{ rgbToHex(firstPickedColor) }}</span>
       </div>
       <div class="color-block">
-        <div :style="{ backgroundColor: secondPickedColor }" @click="getActiveBlock(2)"></div>
+        <div 
+          :style="{ backgroundColor: secondPickedColor }"
+          :class="chooseColor === 2 && 'border'"
+          @click="getActiveBlock(2)"></div>
         <span>{{ rgbToHex(secondPickedColor) }}</span>
       </div>
     </div>
@@ -123,14 +142,14 @@ export default {
       this.y = e.offsetY;
       const imageData = this.shadePicker.ctx.getImageData(this.x, this.y, 1, 1).data;
       this.rgbaColor = `rgba(${imageData[0]},${imageData[1]},${imageData[2]},1)`;
-      
+
       if (this.chooseColor == 1) {
         this.firstPickedColor = this.rgbaColor;
       } else {
         this.secondPickedColor = this.rgbaColor;
       }
-      console.log(this.rgbaColor);
-      this.rgbToHex(this.rgbaColor)
+      
+      this.rgbToHex(this.rgbaColor);
     },
 
     getActiveBlock(blockNum) {
@@ -144,15 +163,21 @@ export default {
     },
 
     mixColors(firstColor, secondColor) {
-      const firstRgba = firstColor.replace(/^rgba?\(|\s+|\)$/g, "").split(",").map(Number);
-      const secondRgba = secondColor.replace(/^rgba?\(|\s+|\)$/g, "").split(",").map(Number);
+      const firstRgba = firstColor
+        .replace(/^rgba?\(|\s+|\)$/g, "")
+        .split(",")
+        .map(Number);
+      const secondRgba = secondColor
+        .replace(/^rgba?\(|\s+|\)$/g, "")
+        .split(",")
+        .map(Number);
 
-      const r = (firstRgba[0] + secondRgba[0])/2
-      const g = (firstRgba[1] + secondRgba[1])/2
-      const b = (firstRgba[2] + secondRgba[2])/2
+      const r = (firstRgba[0] + secondRgba[0]) / 2;
+      const g = (firstRgba[1] + secondRgba[1]) / 2;
+      const b = (firstRgba[2] + secondRgba[2]) / 2;
 
       return `rgba(${r},${g},${b},1)`;
-    }
+    },
   },
 
   mounted() {
