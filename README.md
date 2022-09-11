@@ -1,6 +1,11 @@
 # farbrechner
 
 ## Project setup
+
+```
+cd farbrechner
+```
+
 ```
 npm install
 ```
